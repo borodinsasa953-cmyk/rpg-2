@@ -16,3 +16,4 @@ LOCATIONS = {
         'enemies': ['Вампир', 'Зомби-Шахтер', 'Крыса','Огромный паук' ]
     }
 }
+location_list = list(LOCATIONS.keys())

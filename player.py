@@ -23,5 +23,3 @@ class Player:
         print(f'Уровень: {self.lvl}')
         print(f'Опыт: {self.xp} / 50')
         print('=======================')
-baba = Player('baba')
-baba.show_stats()

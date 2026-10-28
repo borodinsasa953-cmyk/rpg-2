@@ -25,7 +25,3 @@ class Inventory:
             print('Введи нормальное число!')
         return self.items
 inventory = Inventory()
-inventory.add_item('sword', 1)
-inventory.add_item('potion', 3)
-inventory.remove_item('potion', 1)
-inventory.show_items()
