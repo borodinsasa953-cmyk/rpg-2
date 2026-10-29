@@ -2,11 +2,12 @@ from inventory import Inventory
 from player import Player
 
 class Enemy:
-    def __init__(self,name, hp, damage,reward_gold, reward_xp ):
+    def __init__(self,name, hp, min_damage,max_damage,reward_gold, reward_xp ):
         self.name = name
         self.hp = hp
         self.max_hp = hp
-        self.damage = damage
+        self.min_damage = min_damage
+        self.max_damage = max_damage
         self.reward_gold = reward_gold
         self.reward_xp = reward_xp
     def take_damage(self,amount):
@@ -20,7 +21,7 @@ class Enemy:
         return self.hp> 0
            
 EMEMY_DATABASE = {
-    'Гоблин': Enemy('Гоблин', 30, 5,5,5),
+    'Гоблин': Enemy('Гоблин', 30, 3,6,5,5),
     'Орк': Enemy('Орк', 50, 8, 10, 8),
     'Волк': Enemy('Волк',30, 7, 8, 7 ),
     'Жаба-переросток': Enemy('Жаба-переросток', 55, 9, 15, 10),

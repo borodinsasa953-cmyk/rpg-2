@@ -29,6 +29,3 @@ while True:
             print('Нет такого действия!')
     elif game_state == 'game':
         travel(hero)
-
-         
-    
