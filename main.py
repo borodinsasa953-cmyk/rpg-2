@@ -20,12 +20,11 @@ while True:
         print('=' * 20)
         choice = input('Выбери действие: ')
         if choice == '1':
-            game_state = 'game'
+            travel(hero)
         elif choice == '2':
             hero.show_stats()
         elif choice == '3':
             break
         else:
             print('Нет такого действия!')
-    elif game_state == 'game':
-        travel(hero)
+   
