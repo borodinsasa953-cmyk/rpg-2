@@ -3,7 +3,7 @@ import os
 import random
 
 def give_name():
-    player_name = input('Введи свое имя странник: ')
+    player_name = input()
     
     return player_name
 def clear_screen():
@@ -18,3 +18,9 @@ class ANSIColors:
     CYAN = "\033[36m"
     WHITE = "\033[37m"
     RESET = "\033[0m"
+def draw_hp_bar(hp, hp_max):
+    if hp_max == 0:
+        return '♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ 0/0'
+    count = int((hp / hp_max) * 10)
+    bar = ' ❤ '* count + ' ♡ ' * (10 - count)
+    return f'[{bar}]  {hp} / {hp_max}' 

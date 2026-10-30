@@ -1,6 +1,6 @@
 from inventory import Inventory
 from player import Player
-from utils import give_name, clear_screen, ANSIColors
+from utils import give_name, clear_screen, ANSIColors, draw_hp_bar
 from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
 from shop import shop_items, list_shop_items
@@ -9,13 +9,21 @@ import random
 import time
 def start_battle(hero, enemy):
     clear_screen()
-    print(f'Бой начался! {hero.name} против {enemy.name}!')
+    print('=' * 40)
+    print(f'⚔️   БОЙ:{ANSIColors.GREEN} {hero.name} {ANSIColors.RESET}  против {ANSIColors.RED}{enemy.name}{ANSIColors.RESET}')
+    print('=' * 40)
+    input()
+    
     while hero.is_alives() and enemy.is_alive():
-        print(f'Ваше здоровье: {hero.hp} HP')
-        print(f'Здоровье противника ({enemy.name}): {enemy.hp} HP')
+        clear_screen()
+        print('=' * 40)
+        print(f'Вы {ANSIColors.GREEN}({hero.name}){ANSIColors.RESET}: {draw_hp_bar(hero.hp, hero.max_hp)}')
+        print(f'Враг {ANSIColors.RED}({enemy.name}){ANSIColors.RESET}: {draw_hp_bar(enemy.hp, enemy.max_hp)}')
+        print('=' * 40)
         
-        print('1. Ударить' )
-        print('2. Выпить зелье')
+        
+        print(f'1. {ANSIColors.RED}Ударить{ANSIColors.RESET}' )
+        print(f'2. {ANSIColors.PURPLE}Выпить зелье{ANSIColors.RESET}')
         battle_choice = input('Твое действие: ')
         if battle_choice == '1':
             damage = random.randint(hero.min_damage, hero.max_damage)
