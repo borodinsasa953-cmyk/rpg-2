@@ -1,4 +1,5 @@
 from inventory import Inventory
+from utils import ANSIColors
 class Player:
     def __init__(self, name):
         self.name  = name
@@ -20,13 +21,13 @@ class Player:
     def show_stats(self):
         print('ХАРАКТЕРИСТИКИ:')
         print('=======================')
-        print(f'Имя: {self.name}')
+        print(f'{ANSIColors.PURPLE}Имя: {self.name}{ANSIColors.RESET}')
         print('=======================')
-        print(f'Здоровье: {self.hp}')
-        print(f'Золото: {self.gold}')
+        print(f'{ANSIColors.RED}Здоровье: {self.hp}{ANSIColors.RESET}')
+        print(f'{ANSIColors.YELLOW}Золото: {self.gold}{ANSIColors.RESET}')
         print('=======================')
-        print(f'Уровень: {self.lvl}')
-        print(f'Опыт: {self.xp} / 50')
+        print(f'{ANSIColors.GREEN}Уровень: {self.lvl}{ANSIColors.RESET}')
+        print(f'{ANSIColors.CYAN}Опыт: {self.xp} / 50 {ANSIColors.RESET}')
         print(f'Убийства: {self.kills}')
         print('=======================')
     def is_alives(self):

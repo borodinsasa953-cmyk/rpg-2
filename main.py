@@ -1,19 +1,28 @@
+import os
+
 from inventory import Inventory
 from player import Player
 from enemies import Enemy
 from locations import LOCATIONS, location_list
 from enemies import EMEMY_DATABASE
 import random
-from utils import  give_name
-from game_mechanics import travel, open_shop
+from utils import  give_name, clear_screen, ANSIColors
+from game_mechanics import travel, open_shop, start_battle
 from shop import shop_items, list_shop_items
+import time
 
-print('Добро пожаловать в RPG 2.0!')
+print( f'{ANSIColors.RED}~{ANSIColors.RESET}' * 30  )
+print(f'Добро пожаловать в {ANSIColors.RED}RPG  2.0!')
+print( f'{ANSIColors.RED}~{ANSIColors.RESET}' * 30  )
+print()
+
 player_name = give_name()
+
 hero = Player(player_name)
 game_state = 'main_menu'
 while True:
     if game_state == 'main_menu':
+        clear_screen()
         print('=' * 20)
         print('1. Отправиться в путь')
         print('2. Посмотреть характеристики')
@@ -25,10 +34,13 @@ while True:
         if choice == '1':
             travel(hero)
         elif choice == '2':
+            clear_screen()
             hero.show_stats()
+            input()
         elif choice == '3':
             open_shop(hero)
         elif choice == '4':
+            clear_screen()
             hero.inventory.show_items()
             item_choice = input('Что вы хотите экипировать?: ')
             hero.equip_item(item_choice)
