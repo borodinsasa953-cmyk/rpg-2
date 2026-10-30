@@ -1,7 +1,9 @@
+from inventory import Inventory
 from player import Player
 from utils import give_name
 from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
+from shop import shop_items, list_shop_items
 import random
 
 def start_battle(hero, enemy):
@@ -21,6 +23,7 @@ def start_battle(hero, enemy):
                 print(f'Вы победили {enemy.name}! ')
                 hero.gold += enemy.reward_gold
                 hero.xp += enemy.reward_xp
+                hero.kills += 1
                 print(f'Вы получили {enemy.reward_gold} золота и {enemy.reward_xp} опыта!')
                 input()
                 break
@@ -28,9 +31,13 @@ def start_battle(hero, enemy):
             if hero.inventory.items.get('Зелье', 0) > 0:
                 hero.inventory.remove_item('Зелье') 
                 hero.heal(20)
+                print('Вы полечились на 20 HP')
+                input()
                 continue
             else:
                 print('У вас нет зелий!')
+                input()
+                continue
         print('Противник атакует! ')
         hero.take_damage(random.randint(enemy.min_damage, enemy.max_damage))
         if not hero.is_alives():
@@ -38,8 +45,6 @@ def start_battle(hero, enemy):
             input()
             break
         
-
-       
 
 
 
@@ -75,4 +80,31 @@ def travel(hero):
         print('Введи правильное число!')
     except IndexError:
         print('Такой локации не существует!')
+def open_shop(hero):
+    while  True:
+        print(f'Золота в кошельке: {hero.gold} ')
+        for i, key,  in enumerate(shop_items, start = 1):
+            price = shop_items[key]['price']
+            desc = shop_items[key]['desc']
+            print(f'{i}. {key}, - {price} золота. ({desc})')
+        print('0. Выйти')
+        try:
+            shop_choice = int(input('Выбери действие: '))
+            if shop_choice == 0:
+                return
+            product = list_shop_items[shop_choice - 1]
+            price = shop_items[product]['price']
+            if hero.gold >= price:
+                hero.gold -= price
+                hero.inventory.add_item(product)
+                print(f'Вы купили {product}! -{price} золота.')
+                input()
+            else:
+                print('Недостаточно золота!')
+                input()
+        except ValueError:
+            print('Введи правильное число')
+        except IndexError:
+            print('Нет такого товара!')
+                
 

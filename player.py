@@ -10,6 +10,7 @@ class Player:
         self.inventory = Inventory()
         self.min_damage = 10
         self.max_damage = 20
+        self.kills = 0
     def take_damage (self, amount):
         self.hp  = max(0, self.hp - amount)
     def heal (self, amount):
@@ -24,6 +25,7 @@ class Player:
         print('=======================')
         print(f'Уровень: {self.lvl}')
         print(f'Опыт: {self.xp} / 50')
+        print(f'Убийства: {self.kills}')
         print('=======================')
     def is_alives(self):
         return self.hp > 0

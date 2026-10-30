@@ -5,7 +5,8 @@ from locations import LOCATIONS, location_list
 from enemies import EMEMY_DATABASE
 import random
 from utils import  give_name
-from game_mechanics import travel
+from game_mechanics import travel, open_shop
+from shop import shop_items, list_shop_items
 
 print('Добро пожаловать в RPG 2.0!')
 player_name = give_name()
@@ -16,7 +17,8 @@ while True:
         print('=' * 20)
         print('1. Отправиться в путь')
         print('2. Посмотреть характеристики')
-        print('3. Выйти')
+        print('3. Зайти в магазин')
+        print('0. Выйти')
         print('=' * 20)
         choice = input('Выбери действие: ')
         if choice == '1':
@@ -24,6 +26,8 @@ while True:
         elif choice == '2':
             hero.show_stats()
         elif choice == '3':
+            open_shop(hero)
+        elif choice == '0':
             break
         else:
             print('Нет такого действия!')
