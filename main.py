@@ -18,6 +18,7 @@ while True:
         print('1. Отправиться в путь')
         print('2. Посмотреть характеристики')
         print('3. Зайти в магазин')
+        print('4. Инвентарь')
         print('0. Выйти')
         print('=' * 20)
         choice = input('Выбери действие: ')
@@ -27,6 +28,10 @@ while True:
             hero.show_stats()
         elif choice == '3':
             open_shop(hero)
+        elif choice == '4':
+            hero.inventory.show_items()
+            item_choice = input('Что вы хотите экипировать?: ')
+            hero.equip_item(item_choice)
         elif choice == '0':
             break
         else:

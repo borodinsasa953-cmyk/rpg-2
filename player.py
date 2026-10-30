@@ -9,8 +9,10 @@ class Player:
         self.lvl = 1 
         self.inventory = Inventory()
         self.min_damage = 10
-        self.max_damage = 20
+        self.max_damage = 15
         self.kills = 0
+        self.weapon = None
+        self.armor = None
     def take_damage (self, amount):
         self.hp  = max(0, self.hp - amount)
     def heal (self, amount):
@@ -29,3 +31,26 @@ class Player:
         print('=======================')
     def is_alives(self):
         return self.hp > 0
+    def check_level_up(self):
+        if self.xp > self.lvl * 50:
+            self.xp -=  self.lvl *  50
+            self.lvl += 1
+            self.max_damage += 3
+            self.min_damage += 3
+            self.max_hp += 20
+            self.hp = self.max_hp
+            print(f'=== УРОВЕНЬ {self.lvl}! Здоровье и урон увеличены! ===')
+    def equip_item(self, item_name):
+        if item_name == 'Меч':
+            if self.inventory.items.get('Меч', 0) > 0:
+                self.weapon = 'Меч'
+                print('Вы экипировали меч! ')
+                input()
+        elif item_name == 'Броня':
+            if self.inventory.items.get('Броня', 0) > 0:
+                self.armor = 'Броня'
+                print('Вы экипировали броню!')
+                input()
+        else: 
+            print('Такого предмета нет или его нельзя экипировать.')
+        
