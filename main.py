@@ -42,15 +42,16 @@ player_name = give_name()
 hero = Player(player_name)
 game_state = 'main_menu'
 while True:
+
     if game_state == 'main_menu':
         clear_screen()
-        print('=' * 20)
+        print('=' * 30)
         print('1. Отправиться в путь')
         print('2. Посмотреть характеристики')
         print('3. Зайти в магазин')
         print('4. Инвентарь')
         print('0. Выйти')
-        print('=' * 20)
+        print('=' * 30)
         choice = input('Выбери действие: ')
         if choice == '1':
             travel(hero)

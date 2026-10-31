@@ -31,7 +31,8 @@ def start_battle(hero, enemy):
                 damage += 5
             clear_screen()
             time.sleep(1)
-            print(f'Вы ударили врага на {damage} урона!')
+            print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
+            input()
             enemy.take_damage(damage)
             if not enemy.is_alive():
 
@@ -60,7 +61,7 @@ def start_battle(hero, enemy):
                 hero.heal(20)
                 clear_screen()
                 time.sleep(0.5)
-                print('Вы полечились на 20 HP')
+                print(f'Вы полечились на {ANSIColors.GREEN}20{ANSIColors.RESET} HP')
                 input()
                 continue
             else:
@@ -70,12 +71,13 @@ def start_battle(hero, enemy):
                 input()
                 continue
         clear_screen()
-        print('Противник атакует! ')
-        time.sleep(1)
-        damage = random.randint(enemy.min_damage, enemy.max_damage)
+        edamage = random.randint(enemy.min_damage, enemy.max_damage)
         if hero.armor == 'Броня':
-            damage = max(1, damage - 5)
-        hero.take_damage(damage)
+            edamage = max(1, edamage - 5)
+        print(f'Противник атакует! И наносит {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
+        input()
+        time.sleep(0.5)
+        hero.take_damage(edamage)
         if not hero.is_alives():
             clear_screen()
             print('GAME OVER')
@@ -91,7 +93,7 @@ def travel(hero):
     print('--' * 10)
     print('0. Обратно')
     for i, key in enumerate(LOCATIONS):
-        if key == 'Цитадель Вечной Силы' and hero.kills < 3:
+        if key == 'Цитадель Вечной Силы' and hero.kills < 10:
             continue
         print(f'{i+1}. {key} ')
 
@@ -101,17 +103,55 @@ def travel(hero):
         if travel_choice == 0:
             return
         location = location_list[travel_choice - 1]
+
+        
+        
         local_enemy = LOCATIONS[location]['enemies']
-        if location == 'Цитадель Вечной Силы' and hero.kills < 3:
-            clear_screen()
-            print('Сначала наберись опыта. Закрыто.')
-            input()
-        else:
-            clear_screen()
+        if not local_enemy:
             print (f'{location}. {LOCATIONS[location]["desc"]}')
+            print('Нажми Enter чтобы уйти')
+            input()
+            return
+        elif location == 'Цитадель Вечной Силы':
+            if hero.kills < 10:
+                print('Тебе еще рано сюда...')
+                input()
+                return
+            base_enemy = EMEMY_DATABASE['Жнец душ']
+            enemy = Enemy(base_enemy.name,base_enemy.max_hp,base_enemy.min_damage, base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp)
+            clear_screen()
+            print('Вы входите в Цитадель... Жнец душ ждал вас.')
+            input('Нажмите Enter чтобы начать бой')
+            start_battle(hero,enemy)
+            return
+        print (f'{location}. {LOCATIONS[location]["desc"]}')
+        input('Нажмите Enter чтобы идти...')
+        event_roll = random.randint(1,100)
+        if 1 <= event_roll <= 15:
+            print('Вы нашли старый сундук!')
+            find_gold = random.randint(10, 30)
+            hero.gold += find_gold
+            print(f'Вы получили {find_gold} золота!')
+            input()
+            return
+        elif 16 <= event_roll <= 26:
+            hurt = random.randint(10, 20)
+            hero.hp -= hurt
+            print(f'Вы попали в ловушку и потеряли {ANSIColors.RED}{hurt}{ANSIColors.RESET}HP!')
+            input()
+            if not hero.is_alives():
+                print('GAME OVER')
+                input()
+                exit()
+            else:
+                input()
+                return
+        else:
+            local_enemy = LOCATIONS[location]['enemies']
+          
+            clear_screen()
             input()
             if not local_enemy:
-                clear_screen()
                 print('Нажми Enter чтобы уйти')
                 input()
                 return
@@ -125,12 +165,10 @@ def travel(hero):
                 start_battle(hero,enemy)
 
     except  ValueError:
-        clear_screen()
-        clear_screen()
+      
         print('Введи правильное число!')
     except IndexError:
-        clear_screen()
-        clear_screen()
+        
         print('Такой локации не существует!')
 def open_shop(hero):
     while  True:
