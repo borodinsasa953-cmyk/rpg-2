@@ -1,0 +1,14 @@
+{
+    "name": "sss",
+    "hp": 83,
+    "xp": 10,
+    "lvl": 1,
+    "gold": 5,
+    "max_hp": 100,
+    "min_damage": 10,
+    "max_damage": 15,
+    "kills": 1,
+    "weapon": null,
+    "armor": null,
+    "inventory": {}
+}

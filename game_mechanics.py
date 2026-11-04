@@ -7,6 +7,12 @@ from shop import shop_items, list_shop_items
 import os
 import random
 import time
+def contr_attack():
+    attack_roll = random.randint(1,100)
+    if 1<=attack_roll<=30:
+        return True
+    else:
+        return False
 def start_battle(hero, enemy):
     clear_screen()
     print('=' * 40)
@@ -24,6 +30,7 @@ def start_battle(hero, enemy):
         
         print(f'1. {ANSIColors.RED}Ударить{ANSIColors.RESET}' )
         print(f'2. {ANSIColors.PURPLE}Выпить зелье{ANSIColors.RESET}')
+        print(f'3. Попытаться контратаковать')
         battle_choice = input('Твое действие: ')
         if battle_choice == '1':
             damage = random.randint(hero.min_damage, hero.max_damage)
@@ -64,12 +71,46 @@ def start_battle(hero, enemy):
                 print(f'Вы полечились на {ANSIColors.GREEN}20{ANSIColors.RESET} HP')
                 input()
                 continue
+        
             else:
                 clear_screen()
                 time.sleep(0.5)
                 print('У вас нет зелий!')
                 input()
                 continue
+        elif battle_choice == '3':
+            if contr_attack() == True:
+                edamage = random.randint(enemy.min_damage, enemy.max_damage)
+                enemy.take_damage(edamage)
+                print(f'Вы успешно контратаковали! Враг ударил сам себя на {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
+                input()
+                if not enemy.is_alive():
+            
+                    if enemy.name == 'Жнец душ':
+                        clear_screen()
+                        time.sleep(0.5)
+                        print('='* 40)
+                        print('ВЫ ПОБЕДИЛИ БОССА И СПАСЛИ МИР!')
+                        print('='* 40)
+                        exit()
+                    else:
+                        clear_screen()
+                        time.sleep(1)
+                        print(f'Вы победили {enemy.name}! ')
+                        hero.gold += enemy.reward_gold
+                        hero.xp += enemy.reward_xp
+                        hero.kills += 1
+                        print(f'Вы получили {enemy.reward_gold} золота и {enemy.reward_xp} опыта!')
+                        hero.check_level_up()
+                        input()
+                        break
+                else:
+                    continue
+            else:
+                print('У вас не получилось!')
+                input()
+                
+
         clear_screen()
         edamage = random.randint(enemy.min_damage, enemy.max_damage)
         if hero.armor == 'Броня':
@@ -201,5 +242,5 @@ def open_shop(hero):
         except IndexError:
             clear_screen()
             print('Нет такого товара!')
-                
+            
 

@@ -1,5 +1,5 @@
 import os
-
+import sys
 from inventory import Inventory
 from player import Player
 from enemies import Enemy
@@ -9,7 +9,10 @@ import random
 from utils import  give_name, clear_screen, ANSIColors
 from game_mechanics import travel, open_shop, start_battle
 from shop import shop_items, list_shop_items
+from save_system import load_game, save_game
 import time
+os.system('')
+sys.stdout.reconfigure(encoding='utf-8')
 
 print("""
 \033[93m╔══════════════════════════════════════════════════════════════╗
@@ -26,20 +29,20 @@ print("""
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝\033[0m
 """)
+hero =  None
 
-print("""
-\033[93m╔══════════════════════════════════════════════════════════════╗
-\033[93m║\033[97m                                                              \033[93m║
-\033[93m║\033[96m              Добро пожаловать в мир, странник!               \033[93m║
-\033[93m║\033[97m                                                              \033[93m║
-\033[93m║\033[97m                    Как тебя зовут?                           \033[93m║
-\033[93m║\033[97m                                                              \033[93m║
-\033[93m╚══════════════════════════════════════════════════════════════╝\033[0m
-""")
+print('1. Новая игра')
+print('2. Загрузить игру')
+main_choice = input('Выбери действие: ')
 
-player_name = give_name()
+if main_choice == '2':
+    hero = load_game()
+    input()
+if hero is None:
+    
+    player_name = give_name()
+    hero = Player(player_name)
 
-hero = Player(player_name)
 game_state = 'main_menu'
 while True:
 
@@ -50,6 +53,7 @@ while True:
         print('2. Посмотреть характеристики')
         print('3. Зайти в магазин')
         print('4. Инвентарь')
+        print('5. Сохранить игру')
         print('0. Выйти')
         print('=' * 30)
         choice = input('Выбери действие: ')
@@ -66,6 +70,9 @@ while True:
             hero.inventory.show_items()
             item_choice = input('Что вы хотите экипировать?: ')
             hero.equip_item(item_choice)
+        elif choice == '5':
+            save_game(hero)
+            input()
         elif choice == '0':
             break
         else:
