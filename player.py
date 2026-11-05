@@ -1,16 +1,40 @@
 from inventory import Inventory
 from utils import ANSIColors
+def take_class():
+    print('--' * 30)
+    print(f'{ANSIColors.RED}ВЫБОР КЛАССА:{ANSIColors.RESET}')
+    print(f'{ANSIColors.GREEN}~-{ANSIColors.RESET}' * 30)
+    for i, key in enumerate(PLAYER_CLASS):
+        desc =  PLAYER_CLASS[key]['desc']
+        print(f'{i + 1}. {ANSIColors.RED}{key}{ANSIColors.RESET}  {ANSIColors.BLUE}({desc}) {ANSIColors.RESET}')
+    print('0. Выйти.')
+    print(f'{ANSIColors.GREEN}~-{ANSIColors.RESET}' * 30)
+    try:
+        class_choice = int(input('Выбери свой класс: '))
+        if class_choice == 0:
+            exit()
+        clas = list_class[class_choice - 1]
+        print(f'Отлично! Теперь ваш класс - {clas}')
+        return clas
+    except ValueError:
+        print('Введи правильное число!')
+    except KeyboardInterrupt:
+        print('Неверный ввод')
+    except IndexError:
+        print('Нет такого варианта!')
+
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, clas):
         self.name  = name
-        self.max_hp = 100
-        self.hp = 100
+        self.clas = clas
+        self.max_hp = PLAYER_CLASS[clas]['hp']
+        self.hp = PLAYER_CLASS[clas]['hp']
         self.gold = 0
         self.xp = 0
         self.lvl = 1 
         self.inventory = Inventory()
-        self.min_damage = 10
-        self.max_damage = 15
+        self.min_damage = PLAYER_CLASS[clas]['min_damage']
+        self.max_damage = PLAYER_CLASS[clas]['max_damage']
         self.kills = 0
         self.weapon = None
         self.armor = None
@@ -22,6 +46,7 @@ class Player:
         print('ХАРАКТЕРИСТИКИ:')
         print('=======================')
         print(f'{ANSIColors.PURPLE}Имя: {self.name}{ANSIColors.RESET}')
+        print(f'{ANSIColors.RED}Класс: {ANSIColors.RESET}{ANSIColors.PURPLE} {self.clas} {ANSIColors.RESET}')
         print('=======================')
         print(f'{ANSIColors.RED}Здоровье: {self.hp}{ANSIColors.RESET}')
         print(f'{ANSIColors.YELLOW}Золото: {self.gold}{ANSIColors.RESET}')
@@ -54,4 +79,31 @@ class Player:
                 input()
         else: 
             print('Такого предмета нет или его нельзя экипировать.')
+PLAYER_CLASS = {
+    'Маг' : {
+        'name': 'Маг',
+        'hp': 75,
+        'min_damage': 13,
+        'max_damage': 20,
+        'desc': 'Умирает быстро. Но убивает еще быстрее.'
+    },
+    'Рыцарь': {
+        'name': 'Рыцарь',
+        'hp': 120,
+        'min_damage': 7,
+        'max_damage': 12,
+        'desc': 'Крепкий орешек. Бьет слабовато.'
+
+    },
+    'Разбойник': {
+        'name': 'Разбойник',
+        'hp' : 100,
+        'min_damage': 10,
+        'max_damage': 15,
+        'desc': 'Привык брать от жизни всё. Средний боец'
+
+    }
+}
+list_class = list(PLAYER_CLASS.keys())
+
         

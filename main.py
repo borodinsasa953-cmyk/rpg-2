@@ -1,7 +1,7 @@
 import os
 import sys
 from inventory import Inventory
-from player import Player
+from player import Player, take_class, list_class, PLAYER_CLASS
 from enemies import Enemy
 from locations import LOCATIONS, location_list
 from enemies import EMEMY_DATABASE
@@ -35,13 +35,19 @@ print('1. Новая игра')
 print('2. Загрузить игру')
 main_choice = input('Выбери действие: ')
 
+if main_choice not in ['1', '2']:
+    print('Неверный ввод!')
+    exit()
 if main_choice == '2':
     hero = load_game()
     input()
-if hero is None:
-    
+if hero is None or  main_choice == '1':
+    clear_screen()
     player_name = give_name()
-    hero = Player(player_name)
+    clear_screen()
+    clas = take_class()
+    input()
+    hero = Player(player_name, clas)
 
 game_state = 'main_menu'
 while True:

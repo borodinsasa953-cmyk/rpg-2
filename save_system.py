@@ -3,6 +3,7 @@ from player import Player
 def save_game(hero):
     data = {
         'name': hero.name,
+        'clas': hero.clas,
         'hp': hero.hp,
         'xp':hero.xp,
         "lvl": hero.lvl,
@@ -23,9 +24,10 @@ def load_game():
     try:
         with open('savegame.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
-        hero = Player(data['name'])
+        hero = Player(data['name'], data['clas'])
 
         hero.max_hp = data['max_hp']
+        hero.clas = data['clas']
         hero.hp = data['hp']
         hero.gold = data['gold']
         hero.xp = data['xp']
