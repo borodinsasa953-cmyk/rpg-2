@@ -1,5 +1,6 @@
 import json
 from player import Player
+from items import ITEMS
 def save_game(hero):
     data = {
         'name': hero.name,
@@ -14,7 +15,8 @@ def save_game(hero):
         'kills': hero.kills,
         'weapon':hero.weapon,
         'armor':hero.armor,
-        'inventory':hero.inventory.items
+        'inventory':hero.inventory.items,
+        
 
     }
     with open('savegame.json','w',encoding='utf-8') as f:
@@ -38,6 +40,14 @@ def load_game():
         hero.kills = data['kills']
         hero.weapon = data['weapon']
         hero.armor = data['armor']
+        if hero.armor is not  None:
+            hero.armor_effect = ITEMS[hero.armor].get('effect', None)
+        else:
+            hero.weapon_effect = None
+        if  hero.weapon is not None:
+            hero.weapon_effect = ITEMS[hero.weapon].get('effect', None)
+        else:
+            hero.weapon_effect = None
         print('Игра успешно загружена!')
         return hero
     except  FileNotFoundError:

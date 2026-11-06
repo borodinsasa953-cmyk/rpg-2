@@ -97,19 +97,20 @@ def travel(hero):
 def open_shop(hero):
     while  True:
         clear_screen()
-        print(f'Золота в кошельке: {hero.gold} ')
+        print(f'{ANSIColors.YELLOW}|Золота в кошельке: {hero.gold}{ANSIColors.RESET} ')
+        print()
         for i, key,  in enumerate(ITEMS, start = 1):
             item_data = ITEMS[key]
             price = ITEMS[key]['price']
             desc = ITEMS[key]['desc']
-            print(f'{i}. {key} {price} золота. ({desc})')
+            print(f'{i}.{ANSIColors.CYAN}{key}{ANSIColors.RESET} - {ANSIColors.YELLOW}{price} золота. {ANSIColors.RESET}({desc})')
         print('0. Выйти')
         try:
             shop_choice = int(input('Выбери действие: '))
             if shop_choice == 0:
                 return
             product = list_items[shop_choice - 1]
-            price = list_items[product]['price']
+            price = ITEMS[product]['price']
             if hero.gold >= price:
                 hero.gold -= price
                 hero.inventory.add_item(product)

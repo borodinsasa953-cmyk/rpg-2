@@ -8,7 +8,16 @@ class Inventory:
             self.items[item_name] = qty
         return self.items
     def show_items(self):
-        print(self.items)
+        if not self.items:
+            print('Инвентарь пуст')
+            input()
+            return False
+        for  i, key in enumerate(self.items, start=1):
+            qty = self.items[key]
+            print(f'{i}.{key} / {qty} шт.')
+        input()
+        
+        
     def remove_item(self,item_name,qty = 1):
         if qty > 0:
             if item_name in self.items:
@@ -21,6 +30,7 @@ class Inventory:
             
             else:
                 print('Такого предмета нет в инвентаре!')
+                input()
         else:
             print('Введи нормальное число!')
         return self.items

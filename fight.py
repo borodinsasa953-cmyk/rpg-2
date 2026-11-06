@@ -62,6 +62,8 @@ def start_battle(hero, enemy):
             print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
             input()
             enemy.take_damage(damage)
+            if hero.weapon_effect is not None:
+                hero.weapon_effect(hero,enemy,damage)
             if not enemy.is_alive():
 
                 if enemy.name == 'Жнец душ':
@@ -140,3 +142,4 @@ def start_battle(hero, enemy):
             print('GAME OVER')
             input()
             break
+            exit()

@@ -1,6 +1,6 @@
 from inventory import Inventory
 from utils import ANSIColors
-from items import ITEMS
+from items import ITEMS, effect_vampirism, effect_double_hit
 def take_class():
     print('--' * 30)
     print(f'{ANSIColors.RED}ВЫБОР КЛАССА:{ANSIColors.RESET}')
@@ -59,6 +59,14 @@ class Player:
         print(f'{ANSIColors.CYAN}Опыт: {self.xp} / 50 {ANSIColors.RESET}')
         print(f'Убийства: {self.kills}')
         print('=======================')
+        print('ЭКИПИРОВКА:')
+        print(f'Оружие: {self.weapon}')
+        print(f'Броня: {self.armor}')
+        if self.weapon_effect or self.armor_effect:
+            print('Эффект: Активен')
+        else:
+            print('Эффект: Неактивен')
+        print(f'======================')
     def is_alives(self):
         return self.hp > 0
     def check_level_up(self):
@@ -82,14 +90,17 @@ class Player:
                 self.min_damage = item_data['min_damage']
                 self.max_damage = item_data['max_damage']
                 self.weapon_effect = item_data.get('effect', None)
-                print(f'Вы экипировали {item_data}! Урон: {self.min_damage} - {self.max_damage}')
+                print(f'Вы экипировали {item_name}! Урон: {ANSIColors.RED}{self.min_damage} - {self.max_damage}{ANSIColors.RESET}')
+                input()
             elif item_data['type'] == 'armor':
                 self.armor = item_name
                 self.defence = item_data['defence']
                 self.armor_effect = item_data.get('effect', None)
-                print(f'Вы экипировали {item_name}! Защита: {self.defence}')
+                print(f'Вы экипировали {item_name}! Защита: {ANSIColors.CYAN}{self.defence}{ANSIColors.RESET}')
+                input()
         else:
             print('Этот предмет нельзя экипировать')
+            input()
         
 PLAYER_CLASS = {
     'Маг' : {
