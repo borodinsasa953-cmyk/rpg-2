@@ -5,6 +5,7 @@ from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
 from shop import shop_items, list_shop_items
 from fight import contr_attack, start_battle
+from items import ITEMS, list_items
 import os
 import random
 import time
@@ -97,17 +98,18 @@ def open_shop(hero):
     while  True:
         clear_screen()
         print(f'Золота в кошельке: {hero.gold} ')
-        for i, key,  in enumerate(shop_items, start = 1):
-            price = shop_items[key]['price']
-            desc = shop_items[key]['desc']
-            print(f'{i}. {key}, - {price} золота. ({desc})')
+        for i, key,  in enumerate(ITEMS, start = 1):
+            item_data = ITEMS[key]
+            price = ITEMS[key]['price']
+            desc = ITEMS[key]['desc']
+            print(f'{i}. {key} {price} золота. ({desc})')
         print('0. Выйти')
         try:
             shop_choice = int(input('Выбери действие: '))
             if shop_choice == 0:
                 return
-            product = list_shop_items[shop_choice - 1]
-            price = shop_items[product]['price']
+            product = list_items[shop_choice - 1]
+            price = list_items[product]['price']
             if hero.gold >= price:
                 hero.gold -= price
                 hero.inventory.add_item(product)

@@ -1,5 +1,6 @@
 from inventory import Inventory
 from utils import ANSIColors
+from items import ITEMS
 def take_class():
     print('--' * 30)
     print(f'{ANSIColors.RED}ВЫБОР КЛАССА:{ANSIColors.RESET}')
@@ -38,6 +39,9 @@ class Player:
         self.kills = 0
         self.weapon = None
         self.armor = None
+        self.weapon_effect = None
+        self.defence = 0
+        self.armor_effect = None
     def take_damage (self, amount):
         self.hp  = max(0, self.hp - amount)
     def heal (self, amount):
@@ -67,18 +71,26 @@ class Player:
             self.hp = self.max_hp
             print(f'=== УРОВЕНЬ {self.lvl}! Здоровье и урон увеличены! ===')
     def equip_item(self, item_name):
-        if item_name == 'Меч':
-            if self.inventory.items.get('Меч', 0) > 0:
-                self.weapon = 'Меч'
-                print('Вы экипировали меч! ')
-                input()
-        elif item_name == 'Броня':
-            if self.inventory.items.get('Броня', 0) > 0:
-                self.armor = 'Броня'
-                print('Вы экипировали броню!')
-                input()
-        else: 
-            print('Такого предмета нет или его нельзя экипировать.')
+        if self.inventory.items.get(item_name, 0) <= 0:
+            print('У вас нет такого предмета!')
+            return
+        if item_name in ITEMS:
+            item_data = ITEMS[item_name]
+
+            if item_data['type'] == 'weapon':
+                self.weapon = item_name
+                self.min_damage = item_data['min_damage']
+                self.max_damage = item_data['max_damage']
+                self.weapon_effect = item_data.get('effect', None)
+                print(f'Вы экипировали {item_data}! Урон: {self.min_damage} - {self.max_damage}')
+            elif item_data['type'] == 'armor':
+                self.armor = item_name
+                self.defence = item_data['defence']
+                self.armor_effect = item_data.get('effect', None)
+                print(f'Вы экипировали {item_name}! Защита: {self.defence}')
+        else:
+            print('Этот предмет нельзя экипировать')
+        
 PLAYER_CLASS = {
     'Маг' : {
         'name': 'Маг',

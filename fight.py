@@ -23,6 +23,7 @@ def get_reward(hero,enemy):
     hero.kills += 1
     print(f'Вы получили {enemy.reward_gold} золота и {enemy.reward_xp} опыта!')
     hero.check_level_up()
+    input()
 def contr_attack():
     attack_roll = random.randint(1,100)
     if 1 <= attack_roll <= 30:
@@ -56,10 +57,8 @@ def start_battle(hero, enemy):
         battle_choice = input('Твое действие: ')
         if battle_choice == '1':
             damage = random.randint(hero.min_damage, hero.max_damage)
-            if hero.weapon ==  'Меч':
-                damage += 5
             clear_screen()
-            time.sleep(1)
+            time.sleep(0.5)
             print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
             input()
             enemy.take_damage(damage)
@@ -127,13 +126,11 @@ def start_battle(hero, enemy):
                     break
                 
         clear_screen()
-        edamage = random.randint(enemy.min_damage, enemy.max_damage)
+        edamage = random.randint(enemy.min_damage, enemy.max_damage) - hero.defence
         if more_damage:
-            edamage = int(edamage * (random.randint(12,16) / 10))
+            edamage = int((edamage * (random.randint(12,16) / 10)))
             print('Враг наносит больше урона!')
 
-        if hero.armor == 'Броня':
-            edamage = max(1, edamage - 5)
         print(f'Противник атакует! И наносит {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
         input()
         time.sleep(0.5)

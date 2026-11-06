@@ -7,8 +7,7 @@ from locations import LOCATIONS, location_list
 from enemies import EMEMY_DATABASE
 import random
 from utils import  give_name, clear_screen, ANSIColors
-from game_mechanics import travel, open_shop, start_battle
-from shop import shop_items, list_shop_items
+from game_mechanics import travel, open_shop
 from save_system import load_game, save_game
 from fight import contr_attack, start_battle, strong_attack
 import time
