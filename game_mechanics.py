@@ -42,7 +42,7 @@ def travel(hero):
                 input()
                 return
             base_enemy = EMEMY_DATABASE['Жнец душ']
-            enemy = Enemy(base_enemy.name,base_enemy.max_hp,base_enemy.min_damage, base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp)
+            enemy = Enemy(base_enemy.name,base_enemy.max_hp,base_enemy.min_damage, base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp, base_enemy.on_hit_effect)
             clear_screen()
             print('Вы входите в Цитадель... Жнец душ ждал вас.')
             input('Нажмите Enter чтобы начать бой')
@@ -68,7 +68,6 @@ def travel(hero):
                 input()
                 exit()
             else:
-                input()
                 return
         else:
             local_enemy = LOCATIONS[location]['enemies']
@@ -82,7 +81,7 @@ def travel(hero):
             else:
                 enemy_name  = random.choice(local_enemy)
                 base_enemy = EMEMY_DATABASE[enemy_name]
-                enemy = Enemy(base_enemy.name, base_enemy.hp, base_enemy.min_damage,base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp)
+                enemy = Enemy(base_enemy.name, base_enemy.hp, base_enemy.min_damage,base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp, base_enemy.on_hit_effect)
                 clear_screen()
                 print(f'На вас напал {enemy_name}  у него {enemy.hp} здоровья!')
                 input('Нажмите Enter чтобы сразиться!')

@@ -4,11 +4,11 @@ from utils import ANSIColors
 def effect_vampirism(hero, enemy, damage):
     heal_amount = max(1, damage // 3 )
     hero.heal(heal_amount)
-    print(f'Эффект вампиризма!  Вы восстановили {ANSIColors.GREEN}{heal_amount}{ANSIColors.RESET} HP')
+    print(f'Эффект вампиризма! Вы восстановили {ANSIColors.GREEN}{heal_amount}{ANSIColors.RESET} HP')
     input()
 def effect_double_hit(hero,enemy,damage):
     if random.randint(1,100) <= 30:
-        print(f'Клинок наносит еще один удар и наносит еще {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
+        print(f'Клинок наносит еще один удар и наносит дополнительно {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
         input()
         enemy.take_damage(damage)
         if not enemy.is_alive():

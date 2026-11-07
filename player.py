@@ -42,6 +42,7 @@ class Player:
         self.weapon_effect = None
         self.defence = 0
         self.armor_effect = None
+        self.effects = []
     def take_damage (self, amount):
         self.hp  = max(0, self.hp - amount)
     def heal (self, amount):
@@ -128,5 +129,6 @@ PLAYER_CLASS = {
     }
 }
 list_class = list(PLAYER_CLASS.keys())
+
 
         

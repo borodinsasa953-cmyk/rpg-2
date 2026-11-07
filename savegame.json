@@ -1,18 +1,19 @@
 {
     "name": "ssss",
     "clas": "Маг",
-    "hp": 81,
-    "xp": 27,
-    "lvl": 2,
-    "gold": 70,
-    "max_hp": 95,
-    "min_damage": 18,
-    "max_damage": 27,
-    "kills": 5,
+    "hp": 115,
+    "xp": 9,
+    "lvl": 3,
+    "gold": 75,
+    "max_hp": 115,
+    "min_damage": 21,
+    "max_damage": 30,
+    "kills": 12,
     "weapon": "Клинок Вампира",
     "armor": null,
     "inventory": {
         "Кинжал": 1,
-        "Клинок Вампира": 1
+        "Клинок Вампира": 1,
+        "Кольчуга": 1
     }
 }

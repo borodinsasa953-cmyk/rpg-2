@@ -43,10 +43,21 @@ def start_battle(hero, enemy):
     while hero.is_alives() and enemy.is_alive():
 
         clear_screen()
+        for effect in hero.effects[:]:
+            is_alives = effect.tick(hero)
+            if not is_alives:
+                hero.effects.remove(effect)
+        if not hero.is_alives():
+            print('Вы не выдержали действия эффектов...')
+            input('Нажмите Enter...')
+            exit()
+                
         more_damage = False
         print('=' * 40)
         print(f'Вы {ANSIColors.GREEN}({hero.name}){ANSIColors.RESET}: {draw_hp_bar(hero.hp, hero.max_hp)}')
         print(f'Враг {ANSIColors.RED}({enemy.name}){ANSIColors.RESET}: {draw_hp_bar(enemy.hp, enemy.max_hp)}')
+        print(f'Ваши эффекты: {ANSIColors.GREEN}{hero.effects}{ANSIColors.RESET}')
+        print(f'Эффекты врага: {ANSIColors.RED}{enemy.effects}{ANSIColors.RESET}')
         print('=' * 40)
         
         
@@ -122,21 +133,13 @@ def start_battle(hero, enemy):
                 print('Вы промахнулись!')
                 input()
                 if not enemy.is_alive():
-                    is_boss_die()
+                    is_boss_die(hero, enemy)
                                     
                     get_reward(hero,enemy)
                     break
                 
         clear_screen()
-        edamage = random.randint(enemy.min_damage, enemy.max_damage) - hero.defence
-        if more_damage:
-            edamage = int((edamage * (random.randint(12,16) / 10)))
-            print('Враг наносит больше урона!')
-
-        print(f'Противник атакует! И наносит {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
-        input()
-        time.sleep(0.5)
-        hero.take_damage(edamage)
+        enemy.attack(hero,more_damage)
         if not hero.is_alives():
             clear_screen()
             print('GAME OVER')
