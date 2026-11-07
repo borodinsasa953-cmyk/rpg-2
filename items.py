@@ -50,7 +50,15 @@ ITEMS = {
         'type': 'weapon',
         'desc': 'Древнее и могущественное оружие. Исцеляет при нанесении урона.',
         'effect': effect_vampirism
+    },
+    'Зелье исцеления':{
+        'name': 'Зелье исцеления',
+        'price': 20,
+        'heal': 20,
+        'type': 'potion',
+        'desc': 'Зелье исцеляющее 20 HP'
     }
+    
 }
 
 list_items = list(ITEMS.keys())

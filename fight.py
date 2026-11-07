@@ -89,8 +89,8 @@ def start_battle(hero, enemy):
                     get_reward(hero,enemy)
                     break
         elif battle_choice == '2':
-            if hero.inventory.items.get('Зелье', 0) > 0:
-                hero.inventory.remove_item('Зелье') 
+            if hero.inventory.items.get('Зелье исцеления', 0) > 0:
+                hero.inventory.remove_item('Зелье исцеления') 
                 hero.heal(20)
                 clear_screen()
                 time.sleep(0.5)

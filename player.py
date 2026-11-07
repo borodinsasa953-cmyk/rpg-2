@@ -102,7 +102,16 @@ class Player:
         else:
             print('Этот предмет нельзя экипировать')
             input()
-        
+    def sale_item(self, item_name):
+        if self.inventory.items.get(item_name, 0) <= 0:
+            print('У вас нет такого предмета!')
+            return
+        else:
+            sell_price = int(ITEMS[item_name]['price'] * 0.5)
+            self.inventory.remove_item(item_name)
+            self.gold += sell_price
+            print(f'Вы продали{ANSIColors.PURPLE} {item_name}{ANSIColors.RESET} за {ANSIColors.YELLOW}{sell_price}{ANSIColors.RESET} золота')
+
 PLAYER_CLASS = {
     'Маг' : {
         'name': 'Маг',

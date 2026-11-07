@@ -1,6 +1,6 @@
 from inventory import Inventory
 from player import Player
-from utils import give_name, clear_screen, ANSIColors, draw_hp_bar
+from utils import give_name, clear_screen, ANSIColors, draw_hp_bar, frame_text
 from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
 from shop import shop_items, list_shop_items
@@ -95,17 +95,30 @@ def travel(hero):
         print('Такой локации не существует!')
 def open_shop(hero):
     while  True:
-        clear_screen()
+        #clear_screen()
+        print('=' * 50)
         print(f'{ANSIColors.YELLOW}|Золота в кошельке: {hero.gold}{ANSIColors.RESET} ')
+        print('=' * 50)
         print()
+        print(f'{ANSIColors.BOLD}~{ANSIColors.RESET}' * 50)
+        print(f'{ANSIColors.BOLD}---------------------МАГАЗИН---------------------{ANSIColors.RESET}')
+        print(f'{ANSIColors.BOLD}~{ANSIColors.RESET}' * 50)
         for i, key,  in enumerate(ITEMS, start = 1):
             item_data = ITEMS[key]
             price = ITEMS[key]['price']
             desc = ITEMS[key]['desc']
             print(f'{i}.{ANSIColors.CYAN}{key}{ANSIColors.RESET} - {ANSIColors.YELLOW}{price} золота. {ANSIColors.RESET}({desc})')
+        print(f'{i+1}.{ANSIColors.CYAN}Продать предмет.{ANSIColors.RESET}')
         print('0. Выйти')
+        print('~' * 50)
         try:
             shop_choice = int(input('Выбери действие: '))
+            if shop_choice == {i+1}:
+                hero.inventory.show_items()
+                hero_product = input('Выберите предмет для продажи: ')
+                hero.sell_item(hero_product)
+                input
+
             if shop_choice == 0:
                 return
             product = list_items[shop_choice - 1]
