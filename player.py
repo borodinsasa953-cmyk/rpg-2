@@ -1,6 +1,7 @@
 from inventory import Inventory
 from utils import ANSIColors
 from items import ITEMS, effect_vampirism, effect_double_hit
+from effects import StatusEffect
 def take_class():
     print('--' * 30)
     print(f'{ANSIColors.RED}ВЫБОР КЛАССА:{ANSIColors.RESET}')
@@ -111,6 +112,47 @@ class Player:
             self.inventory.remove_item(item_name)
             self.gold += sell_price
             print(f'Вы продали{ANSIColors.PURPLE} {item_name}{ANSIColors.RESET} за {ANSIColors.YELLOW}{sell_price}{ANSIColors.RESET} золота')
+    def use_item(self,target = None):
+        is_item = 0
+        for key in self.inventory.items:
+            if ITEMS[key]['type'] == 'potion':
+                is_item += 1
+                qty = self.inventory.items[key]
+                print(f'{key} / {qty} шт.')
+        choice = input('Что вы хотите использовать?: ')
+        if is_item == 0:
+            print('Нет подходящих предметов...')
+            print()
+        print('0. Выйти')
+        item_name= input('Что вы хотите использовать?: ')
+        if item_name == '0':
+            return False
+        if item_name in self.inventory.items:
+            power = ITEMS[item_name].get('power', None)
+            duration = ITEMS[item_name].get('duration', None)
+            if ITEMS[item_name]['effect_type'] == 'heal':
+                self.heal(power)
+                self.inventory.remove_item(item_name)
+                print(f'Вы использовали {ANSIColors.PURPLE}{item_name}{ANSIColors.RESET}!')
+                input()
+                return
+            elif ITEMS[item_name]['effect_type'] == 'regen':
+                potion_effect_regen = StatusEffect('Регенерация', duration,power, True)
+                self.effects.append(potion_effect_regen)
+                self.inventory.remove_item(item_name)
+                print(f'Вы использовали {ANSIColors.PURPLE}{item_name}{ANSIColors.RESET}!')
+                input()
+                return
+            else:
+                print('Этот предмет нельзя использовать')
+                input()
+                return False
+        else:
+            print('У вас нет такого предмета!')
+            input()
+            return False
+
+            
 
 PLAYER_CLASS = {
     'Маг' : {

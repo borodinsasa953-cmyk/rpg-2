@@ -32,7 +32,7 @@ class Enemy:
             print(f'{self.name} атакует вас на {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
             input()
         if self.on_hit_effect is not  None:
-            if random.randint(1, 100) <= 100:
+            if random.randint(1, 100) <= 30:
                 new_effect = copy.deepcopy(self.on_hit_effect)
                 target.effects.append(new_effect)
                 print(f'{self.name} накладывает на  {target.name} эффект {new_effect.name}!')

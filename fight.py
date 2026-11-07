@@ -3,6 +3,7 @@ from player import Player
 from utils import give_name, clear_screen, ANSIColors, draw_hp_bar
 from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
+from items import ITEMS
 import os
 import random
 import time
@@ -62,7 +63,7 @@ def start_battle(hero, enemy):
         
         
         print(f'1. {ANSIColors.RED}Ударить{ANSIColors.RESET}' )
-        print(f'2. {ANSIColors.PURPLE}Выпить зелье{ANSIColors.RESET}')
+        print(f'2. {ANSIColors.PURPLE}Использовать предмет{ANSIColors.RESET}')
         print(f'3. {ANSIColors.YELLOW}Попытаться контратаковать{ANSIColors.RESET}')
         print(f'4. {ANSIColors.RED}Сильный удар{ANSIColors.RESET}')
         battle_choice = input('Твое действие: ')
@@ -89,21 +90,13 @@ def start_battle(hero, enemy):
                     get_reward(hero,enemy)
                     break
         elif battle_choice == '2':
-            if hero.inventory.items.get('Зелье исцеления', 0) > 0:
-                hero.inventory.remove_item('Зелье исцеления') 
-                hero.heal(20)
-                clear_screen()
-                time.sleep(0.5)
-                print(f'Вы полечились на {ANSIColors.GREEN}20{ANSIColors.RESET} HP')
-                input()
+            clear_screen()
+            item_used = hero.use_item()
+            if  not item_used:
                 continue
-        
-            else:
-                clear_screen()
-                time.sleep(0.5)
-                print('У вас нет зелий!')
-                input()
-                continue
+            
+            
+           
         elif battle_choice == '3':
             if contr_attack() == True:
                 edamage = random.randint(enemy.min_damage, enemy.max_damage)
