@@ -10,13 +10,18 @@ import random
 import time
 import copy
 def is_boss_die(hero, enemy):
-    if enemy.is_boss:
+    if enemy.is_boss == True and not enemy.is_alive():
         clear_screen()
         time.sleep(0.5)
+        hero.boss_die = True
         print('='* 40)
         print('ВЫ ПОБЕДИЛИ БОССА И СПАСЛИ МИР!')
         print('='* 40)
-        exit()
+        clear_screen()
+        input()
+        clear_screen()
+        print(f'Но тьма еще не ушла... Открыта новая локация: Бездна!')
+        input()
 def get_reward(hero,enemy):
     clear_screen()
     time.sleep(1)
@@ -79,7 +84,6 @@ def start_battle(hero, enemy):
             if hero.weapon_effect is not None:
                 hero.weapon_effect(hero,enemy,damage)
             if not enemy.is_alive():
-
                 get_reward(hero,enemy)
                 break
         elif battle_choice == '2':
@@ -140,10 +144,18 @@ def start_boss_fight(hero, enemy):
     while hero.is_alives() and enemy.is_alive():
 
         clear_screen()
+        for effect in enemy.effects[:]:
+            is_alive = effect.tick(enemy)
+            if not is_alive:
+                enemy.effects.remove(effect)
         for effect in hero.effects[:]:
             is_alives = effect.tick(hero)
             if not is_alives:
                 hero.effects.remove(effect)
+        if not enemy.is_alive():
+            print(f'{enemy.name} не выдержал действия эффекта...')
+            input()
+            is_boss_die(hero,enemy)
         if not hero.is_alives():
             print('Вы не выдержали действия эффектов...')
             input('Нажмите Enter...')
@@ -185,7 +197,7 @@ def start_boss_fight(hero, enemy):
             if hero.weapon_effect is not None:
                 hero.weapon_effect(hero,enemy,damage)
             if not enemy.is_alive():
-
+                is_boss_die(hero, enemy)
                 get_reward(hero,enemy)
                 break
         elif battle_choice == '2':
@@ -213,6 +225,7 @@ def start_boss_fight(hero, enemy):
                 print(f'Вы успешно контратаковали! Враг ударил сам себя на {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
                 input()
                 if not enemy.is_alive():  
+                    is_boss_die(hero,enemy)
                     get_reward(hero,enemy)
                     break
                 else:
@@ -227,15 +240,17 @@ def start_boss_fight(hero, enemy):
                     s_damage += 5
                 enemy.take_damage(s_damage)
                 print(f'Сокрушительный удар! Вы нанесли {ANSIColors.RED}{s_damage}{ANSIColors.RESET} урона!')
+                if hero.weapon_effect is not None:
+                    hero.weapon_effect(hero,enemy,s_damage)
                 input()
             else:
                 more_damage = True
                 print('Вы промахнулись!')
                 input()
-                if not enemy.is_alive():
-                                    
-                    get_reward(hero,enemy)
-                    break
+            if not enemy.is_alive():
+                is_boss_die(hero, enemy)                        
+                get_reward(hero,enemy)
+                break
                 
         clear_screen()
         enemy.attack(hero,more_damage)

@@ -19,6 +19,8 @@ def travel(hero):
     for i, key in enumerate(LOCATIONS):
         if key == 'Цитадель Вечной Силы' and hero.kills < 10:
             continue
+        if key == 'Бездна' and hero.boss_die == False:
+            continue
         print(f'{i+1}. {key} ')
 
     print('--' * 10)
@@ -42,11 +44,15 @@ def travel(hero):
                 input()
                 return
             base_enemy = EMEMY_DATABASE['Жнец душ']
-            enemy = Enemy(base_enemy.name,base_enemy.max_hp,base_enemy.min_damage, base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp, base_enemy.on_hit_effect)
+            enemy = Enemy(base_enemy.name,base_enemy.max_hp,base_enemy.min_damage, base_enemy.max_damage, base_enemy.reward_gold, base_enemy.reward_xp, base_enemy.on_hit_effect, base_enemy.chance_of_effect, base_enemy.is_boss )
             clear_screen()
             print('Вы входите в Цитадель... Жнец душ ждал вас.')
             input('Нажмите Enter чтобы начать бой')
             start_boss_fight(hero,enemy)
+            return
+        elif location == 'Бездна' and hero.boss_die == False:
+            print('Тебе сюда нельзя. Лучше никогда сюда не приходи...')
+            input()
             return
         print (f'{location}. {LOCATIONS[location]["desc"]}')
         input('Нажмите Enter чтобы идти...')

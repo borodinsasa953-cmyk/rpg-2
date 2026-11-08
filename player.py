@@ -44,6 +44,7 @@ class Player:
         self.defence = 0
         self.armor_effect = None
         self.effects = []
+        self.boss_die = False
     def take_damage (self, amount):
         self.hp  = max(0, self.hp - amount)
     def heal (self, amount):

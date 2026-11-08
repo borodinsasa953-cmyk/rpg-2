@@ -16,6 +16,7 @@ def save_game(hero):
         'weapon':hero.weapon,
         'armor':hero.armor,
         'inventory':hero.inventory.items,
+        'is_boss_die': hero.boss_die
         
 
     }
@@ -40,6 +41,7 @@ def load_game():
         hero.kills = data['kills']
         hero.weapon = data['weapon']
         hero.armor = data['armor']
+        hero.boss_die = data['is_boss_die']
         if hero.armor is not  None:
             hero.armor_effect = ITEMS[hero.armor].get('effect', None)
         else:

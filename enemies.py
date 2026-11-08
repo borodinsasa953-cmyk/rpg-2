@@ -47,6 +47,8 @@ poison_effect = StatusEffect('Яд жабы',3 ,5)
 spider_poison_effect = StatusEffect('Яд паука', 5, 4)
 burn_souls = StatusEffect('Пламя душ', 5, 5)
 berserk = StatusEffect('Берсерк', 10, 15)
+burn = StatusEffect('Горение', 3, 10)
+vampirism = StatusEffect('Вампиризм', 5, 10,)
 
 
 EMEMY_DATABASE = {
@@ -63,7 +65,10 @@ EMEMY_DATABASE = {
     'Хрюшка-мясник': Enemy('Хрюшка-мясник', 70, 14, 19,41,25),
     'Чучело': Enemy('Чучело',60,10,15,35,25 ),
     'Медведь-мутант': Enemy('Медведь-мутант', 100, 20,35,80,50),
-    'Зараженный сталкер': Enemy('Зараженный сталкер', 50, 11, 20, 20, 20)
+    'Зараженный сталкер': Enemy('Зараженный сталкер', 50, 11, 20, 20, 20),
+    'Бес': Enemy('Бес', 150, 25, 40, 180, 150, on_hit_effect=burn,chance_of_effect=35 ),
+    'Покровитель падших': Enemy('Покровитель падших', 300, 50, 65, 400, 250),
+    'Высший вампир': Enemy('Высший вампир',400, 70, 80, 500, 400,on_hit_effect=vampirism, chance_of_effect= 40 )
 
 }
     
