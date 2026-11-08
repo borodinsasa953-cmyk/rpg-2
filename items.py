@@ -14,6 +14,11 @@ def effect_double_hit(hero,enemy,damage):
         if not enemy.is_alive():
             print(f'{enemy.name} падает замертво от двойного удара!')
             input()
+def effect_spikes(hero, enemy, damage):
+    agressive_defence = damage // 4
+    enemy.take_damage(agressive_defence)
+    print(f'Ваша броня вернула {ANSIColors.PURPLE}{enemy.name}{ANSIColors.RESET} {ANSIColors.RED}{agressive_defence}{ANSIColors.RESET} урона!')
+    input()
 ITEMS = {
     'Меч': {
         'name': 'Меч',
@@ -23,6 +28,15 @@ ITEMS = {
         'type': 'weapon',
         'desc': 'Обычный меч, увеличивает урон'
         
+
+    },
+    'Кожаная куртка':{
+        'name':'Кожаная куртка',
+        'price': 30,
+        'defence': 2,
+        'type': 'armor',
+        'desc': 'Защищает, но слабо. Дешево и сердито'
+
 
     },
     'Кольчуга': {
@@ -50,6 +64,15 @@ ITEMS = {
         'type': 'weapon',
         'desc': 'Древнее и могущественное оружие. Исцеляет при нанесении урона.',
         'effect': effect_vampirism
+    },
+    'Шипастая кираса':{
+        'name': 'Шипастая кираса',
+        'price': 150,
+        'defence': 10,
+        'type': 'armor',
+        'desc': 'Хорошая броня, атакующий вас сам получит часть урона!',
+        'effect': effect_spikes
+
     },
     'Зелье исцеления':{
         'name': 'Зелье исцеления',

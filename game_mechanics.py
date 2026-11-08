@@ -3,7 +3,6 @@ from player import Player
 from utils import give_name, clear_screen, ANSIColors, draw_hp_bar, frame_text
 from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
-from shop import shop_items, list_shop_items
 from fight import contr_attack, start_battle, start_boss_fight
 from items import ITEMS, list_items
 import os
@@ -41,6 +40,10 @@ def travel(hero):
         elif location == 'Цитадель Вечной Силы':
             if hero.kills < 10:
                 print('Тебе еще рано сюда...')
+                input()
+                return
+            if hero.boss_die:
+                print('Здесь тихо... Жнец душ больше никого не потревожит...')
                 input()
                 return
             base_enemy = EMEMY_DATABASE['Жнец душ']

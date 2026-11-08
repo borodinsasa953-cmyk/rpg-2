@@ -33,6 +33,8 @@ class Enemy:
             print('Враг наносит больше урона!')
             print(f'{self.name} атакует вас на {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
             input()
+        if target.armor_effect is not None:
+            target.armor_effect(target,self,damage)
         if self.on_hit_effect is not  None:
             if random.randint(1, 100) <= self.chance_of_effect:
                 new_effect = copy.deepcopy(self.on_hit_effect)

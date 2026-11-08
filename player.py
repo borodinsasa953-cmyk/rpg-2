@@ -65,10 +65,14 @@ class Player:
         print('ЭКИПИРОВКА:')
         print(f'Оружие: {self.weapon}')
         print(f'Броня: {self.armor}')
-        if self.weapon_effect or self.armor_effect:
-            print('Эффект: Активен')
+        if self.weapon_effect:
+            print('Эффект оружия: Активен')
         else:
-            print('Эффект: Неактивен')
+            print('Эффект оружия: Неактивен')
+        if self.armor_effect:
+            print('Эффект брони: Активен')
+        else:
+            print('Эффект брони: Неактивен')
         print(f'======================')
     def is_alives(self):
         return self.hp > 0
