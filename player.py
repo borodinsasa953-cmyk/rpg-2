@@ -132,6 +132,7 @@ class Player:
         if item_name == '0':
             return False
         if item_name in self.inventory.items:
+            atk_mult = ITEMS[item_name].get('atk_mult', None)
             power = ITEMS[item_name].get('power', None)
             duration = ITEMS[item_name].get('duration', None)
             if ITEMS[item_name]['effect_type'] == 'heal':
@@ -147,6 +148,11 @@ class Player:
                 print(f'Вы использовали {ANSIColors.PURPLE}{item_name}{ANSIColors.RESET}!')
                 input()
                 return
+            elif ITEMS[item_name]['effect_type'] == 'buff':
+                potion_effect_buff = StatusEffect('Усиление',duration, atk_mult=atk_mult )
+                self.effects.append(potion_effect_buff)
+                self.inventory.remove_item(item_name)
+                print(f'Вы использовали {ANSIColors.PURPLE}{item_name}{ANSIColors.RESET}!')
             else:
                 print('Этот предмет нельзя использовать')
                 input()

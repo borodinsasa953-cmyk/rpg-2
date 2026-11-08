@@ -75,7 +75,13 @@ def start_battle(hero, enemy):
         print(f'4. {ANSIColors.RED}Сильный удар{ANSIColors.RESET}')
         battle_choice = input('Твое действие: ')
         if battle_choice == '1':
+            clear_screen()
             damage = random.randint(hero.min_damage, hero.max_damage)
+            for effect in hero.effects[:]:
+                if effect.atk_mult != 1.0:
+                    damage = int(damage * effect.atk_mult)
+                    print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!')  
+                    input()          
             clear_screen()
             time.sleep(0.5)
             print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
@@ -110,7 +116,13 @@ def start_battle(hero, enemy):
                 input()
         elif battle_choice == '4':
             if strong_attack():
+                clear_screen()
                 s_damage = int(random.randint(hero.min_damage, hero.max_damage) * 1.5)
+                for effect in hero.effects[:]:
+                    if effect.atk.mult != 1.0:
+                        s_damage = int(s_damage * effect.atk_mult)
+                        print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!') 
+                        input()
                 if hero.weapon ==  'Меч':
                     s_damage += 5
                 enemy.take_damage(s_damage)
@@ -188,9 +200,16 @@ def start_boss_fight(hero, enemy):
         print(f'4. {ANSIColors.RED}Сильный удар{ANSIColors.RESET}')
         battle_choice = input('Твое действие: ')
         if battle_choice == '1':
+            clear_screen()
             damage = random.randint(hero.min_damage, hero.max_damage)
+
             clear_screen()
             time.sleep(0.5)
+            for effect in hero.effects[:]:
+                if effect.atk.mult != 1.0:
+                    damage = int(damage * effect.atk_mult)
+                    print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!') 
+                    input()
             print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
             input()
             enemy.take_damage(damage)
@@ -234,11 +253,15 @@ def start_boss_fight(hero, enemy):
                 print('У вас не получилось!')
                 input()
         elif battle_choice == '4':
+            clear_screen()
             if strong_attack():
                 s_damage = int(random.randint(hero.min_damage, hero.max_damage) * 1.5)
-                if hero.weapon ==  'Меч':
-                    s_damage += 5
                 enemy.take_damage(s_damage)
+                for effect in hero.effects[:]:
+                    if effect.atk.mult != 1.0:
+                        s_damage = int(s_damage * effect.atk_mult)
+                        print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!') 
+                        input()
                 print(f'Сокрушительный удар! Вы нанесли {ANSIColors.RED}{s_damage}{ANSIColors.RESET} урона!')
                 if hero.weapon_effect is not None:
                     hero.weapon_effect(hero,enemy,s_damage)

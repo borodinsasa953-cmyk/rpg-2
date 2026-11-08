@@ -53,6 +53,7 @@ burn = StatusEffect('Горение', 3, 10)
 vampirism = StatusEffect('Вампиризм', 5, 10,)
 
 
+
 EMEMY_DATABASE = {
     'Гоблин': Enemy('Гоблин', 30, 3,6,5,10),
     'Орк': Enemy('Орк', 50, 4, 8, 10, 13),
