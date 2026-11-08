@@ -58,7 +58,7 @@ class Player:
         print(f'{ANSIColors.YELLOW}Золото: {self.gold}{ANSIColors.RESET}')
         print('=======================')
         print(f'{ANSIColors.GREEN}Уровень: {self.lvl}{ANSIColors.RESET}')
-        print(f'{ANSIColors.CYAN}Опыт: {self.xp} / 50 {ANSIColors.RESET}')
+        print(f'{ANSIColors.CYAN}Опыт: {self.xp} / {50 * self.lvl} {ANSIColors.RESET}')
         print(f'Убийства: {self.kills}')
         print('=======================')
         print('ЭКИПИРОВКА:')
@@ -119,7 +119,6 @@ class Player:
                 is_item += 1
                 qty = self.inventory.items[key]
                 print(f'{key} / {qty} шт.')
-        choice = input('Что вы хотите использовать?: ')
         if is_item == 0:
             print('Нет подходящих предметов...')
             print()

@@ -4,7 +4,7 @@ from utils import give_name, clear_screen, ANSIColors, draw_hp_bar, frame_text
 from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
 from shop import shop_items, list_shop_items
-from fight import contr_attack, start_battle
+from fight import contr_attack, start_battle, start_boss_fight
 from items import ITEMS, list_items
 import os
 import random
@@ -46,7 +46,7 @@ def travel(hero):
             clear_screen()
             print('Вы входите в Цитадель... Жнец душ ждал вас.')
             input('Нажмите Enter чтобы начать бой')
-            start_battle(hero,enemy)
+            start_boss_fight(hero,enemy)
             return
         print (f'{location}. {LOCATIONS[location]["desc"]}')
         input('Нажмите Enter чтобы идти...')

@@ -6,7 +6,7 @@ import copy
 from effects import  StatusEffect 
 
 class Enemy:
-    def __init__(self,name, hp, min_damage,max_damage,reward_gold, reward_xp,on_hit_effect = None):
+    def __init__(self,name, hp, min_damage,max_damage,reward_gold, reward_xp,on_hit_effect = None, chance_of_effect = 30, is_boss = False):
         self.name = name
         self.hp = hp
         self.max_hp = hp
@@ -16,6 +16,8 @@ class Enemy:
         self.reward_xp = reward_xp
         self.effects = []
         self.on_hit_effect = on_hit_effect
+        self.chance_of_effect = chance_of_effect
+        self.is_boss = is_boss
     def take_damage(self,amount):
         self.hp = max(0, self.hp - amount)
     def heal(self, amount):
@@ -32,7 +34,7 @@ class Enemy:
             print(f'{self.name} атакует вас на {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
             input()
         if self.on_hit_effect is not  None:
-            if random.randint(1, 100) <= 30:
+            if random.randint(1, 100) <= self.chance_of_effect:
                 new_effect = copy.deepcopy(self.on_hit_effect)
                 target.effects.append(new_effect)
                 print(f'{self.name} накладывает на  {target.name} эффект {new_effect.name}!')
@@ -43,6 +45,8 @@ class Enemy:
 
 poison_effect = StatusEffect('Яд жабы',3 ,5)
 spider_poison_effect = StatusEffect('Яд паука', 5, 4)
+burn_souls = StatusEffect('Пламя душ', 5, 5)
+berserk = StatusEffect('Берсерк', 10, 15)
 
 
 EMEMY_DATABASE = {
@@ -53,8 +57,8 @@ EMEMY_DATABASE = {
     'Вампир': Enemy('Вампир', 45, 7, 10, 20,18),
     'Зомби-шахтер': Enemy('Зомби-шахтер',60, 2, 6,10,16),
     'Крыса': Enemy('Крыса', 10,2,4,3,6),
-    'Огромный паук': Enemy('Огромный паук', 50, 5, 10, 30, 25, on_hit_effect=spider_poison_effect),
-    'Жнец душ': Enemy('Жнец душ', 200, 30, 45, 200, 200 ),
+    'Огромный паук': Enemy('Огромный паук', 50, 5, 10, 30, 25, on_hit_effect=spider_poison_effect, chance_of_effect=40),
+    'Жнец душ': Enemy('Жнец душ', 200, 30, 45, 200, 200, on_hit_effect=burn_souls, chance_of_effect=25, is_boss = True ),
     'Херобрин': Enemy('Херобрин', 75,15,20,40,30 ),
     'Хрюшка-мясник': Enemy('Хрюшка-мясник', 70, 14, 19,41,25),
     'Чучело': Enemy('Чучело',60,10,15,35,25 ),
