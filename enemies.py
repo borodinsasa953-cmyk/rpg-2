@@ -23,7 +23,13 @@ class Enemy:
     def heal(self, amount):
         self.hp = min(self.max_hp, self.hp + amount)
     def attack(self, target, more_damage):
+
         damage = random.randint(self.min_damage, self.max_damage)
+        for effect in self.effects[:]:
+            if effect.atk_mult != 1.0:
+                damage = int(damage * effect.atk_mult)
+                print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил урон у {ANSIColors.RED}{self.name}{ANSIColors.RESET}')
+            
         if more_damage == False:
             target.take_damage(damage)
             print(f'{self.name} атакует вас на {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
@@ -34,12 +40,12 @@ class Enemy:
             print(f'{self.name} атакует вас на {ANSIColors.RED}{damage}{ANSIColors.RESET} урона!')
             input()
         if target.armor_effect is not None:
-            target.armor_effect(target,self,damage)
+            target.armor_effect(self,target,damage)
         if self.on_hit_effect is not  None:
             if random.randint(1, 100) <= self.chance_of_effect:
                 new_effect = copy.deepcopy(self.on_hit_effect)
                 target.effects.append(new_effect)
-                print(f'{self.name} накладывает на  {target.name} эффект {new_effect.name}!')
+                print(f'{ANSIColors.RED}{self.name}{ANSIColors.RESET} накладывает на  {ANSIColors.GREEN}{target.name}{ANSIColors.RESET} эффект {ANSIColors.PURPLE}{new_effect.name}{ANSIColors.RESET}!')
                 input()
     def is_alive(self):
         return self.hp> 0
@@ -51,14 +57,17 @@ burn_souls = StatusEffect('Пламя душ', 5, 5)
 berserk = StatusEffect('Берсерк', 10, 15)
 burn = StatusEffect('Горение', 3, 10)
 vampirism = StatusEffect('Вампиризм', 5, 10,)
+stun = StatusEffect('Оглушение', 1, is_stun=True)
+slow = StatusEffect('Замедление', 3, atk_mult= 0.75)
 
 
 
 EMEMY_DATABASE = {
     'Гоблин': Enemy('Гоблин', 30, 3,6,5,10),
-    'Орк': Enemy('Орк', 50, 4, 8, 10, 13),
+    'Орк': Enemy('Орк', 50, 4, 8, 10, 13, on_hit_effect=stun, chance_of_effect=15),
     'Волк': Enemy('Волк',30, 4, 7, 8, 11 ),
     'Жаба-переросток': Enemy('Жаба-переросток', 55, 6, 10, 15, 18, on_hit_effect=poison_effect),
+    'Слизняк': Enemy('Слизняк', 40,4, 10, 15,15, on_hit_effect=slow, chance_of_effect= 45 ),
     'Вампир': Enemy('Вампир', 45, 7, 10, 20,18),
     'Зомби-шахтер': Enemy('Зомби-шахтер',60, 2, 6,10,16),
     'Крыса': Enemy('Крыса', 10,2,4,3,6),
@@ -67,7 +76,7 @@ EMEMY_DATABASE = {
     'Херобрин': Enemy('Херобрин', 75,15,20,40,30 ),
     'Хрюшка-мясник': Enemy('Хрюшка-мясник', 70, 14, 19,41,25),
     'Чучело': Enemy('Чучело',60,10,15,35,25 ),
-    'Медведь-мутант': Enemy('Медведь-мутант', 100, 20,35,80,50),
+    'Медведь-мутант': Enemy('Медведь-мутант', 100, 20,35,80,50,on_hit_effect=stun, chance_of_effect=25),
     'Зараженный сталкер': Enemy('Зараженный сталкер', 50, 11, 20, 20, 20),
     'Бес': Enemy('Бес', 150, 25, 40, 180, 150, on_hit_effect=burn,chance_of_effect=35 ),
     'Покровитель падших': Enemy('Покровитель падших', 300, 50, 65, 400, 250),

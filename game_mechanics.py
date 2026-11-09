@@ -58,7 +58,9 @@ def travel(hero):
             input()
             return
         print (f'{location}. {LOCATIONS[location]["desc"]}')
+        clear_screen()
         input('Нажмите Enter чтобы идти...')
+        clear_screen()
         event_roll = random.randint(1,100)
         if 1 <= event_roll <= 15:
             print('Вы нашли старый сундук!')
@@ -73,9 +75,24 @@ def travel(hero):
             print(f'Вы попали в ловушку и потеряли {ANSIColors.RED}{hurt}{ANSIColors.RESET}HP!')
             input()
             if not hero.is_alives():
-                print('GAME OVER')
-                input()
-                exit()
+                while True:
+                    clear_screen
+                    print('ВЫ ПОГИБЛИ...')
+                    print('1.Загрузить сохранение')
+                    print('2. Выйти')
+                    choice =  input('Выберите действие: ')
+                    if choice == '1':
+                        from save_system import load_game
+                        loaded_hero = load_game()
+                        hero.__dict__.update(loaded_hero.__dict__)
+                        print('Игра успешно загружена!')
+                        input()
+                        return
+                    elif choice == '2':
+                        exit()
+                    else:
+                        print('Неверный ввод!')
+                        input()
             else:
                 return
         else:
@@ -114,6 +131,8 @@ def open_shop(hero):
         print(f'{ANSIColors.BOLD}~{ANSIColors.RESET}' * 50)
         for i, key,  in enumerate(ITEMS, start = 1):
             item_data = ITEMS[key]
+            if item_data.get('requries_boss') and not hero.boss_die:
+                continue
             price = ITEMS[key]['price']
             desc = ITEMS[key]['desc']
             print(f'{i}.{ANSIColors.CYAN}{key}{ANSIColors.RESET} - {ANSIColors.YELLOW}{price} золота. {ANSIColors.RESET}({desc})')
@@ -125,6 +144,10 @@ def open_shop(hero):
                 return
             product = list_items[shop_choice - 1]
             price = ITEMS[product]['price']
+            if product in ITEMS and ITEMS[product].get('requries_boss') and not hero.boss_die:
+                print('Ты еще не достоин это купить...')
+                input()
+                continue
             if hero.gold >= price:
                 hero.gold -= price
                 hero.inventory.add_item(product)

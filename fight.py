@@ -49,17 +49,39 @@ def start_battle(hero, enemy):
     input()
     
     while hero.is_alives() and enemy.is_alive():
-
+        is_stunned = False
+        is_enemy_stunned = False
         clear_screen()
         for effect in hero.effects[:]:
+            if effect.is_stun:
+                is_stunned = True
             is_alives = effect.tick(hero)
             if not is_alives:
                 hero.effects.remove(effect)
         if not hero.is_alives():
             print('Вы не выдержали действия эффектов...')
-            input('Нажмите Enter...')
-            exit()
-                
+            while True:
+                clear_screen
+                print('ВЫ ПОГИБЛИ...')
+                print('1.Загрузить сохранение')
+                print('2. Выйти')
+                choice =  input('Выберите действие: ')
+                if choice == '1':
+                    from save_system import load_game
+                    loaded_hero = load_game()
+                    hero.__dict__.update(loaded_hero.__dict__)
+                    print('Игра успешно загружена!')
+                    input()
+                    return
+                elif choice == '2':
+                    exit()
+                else:
+                    print('Неверный ввод!')
+                    input()
+        for effect in enemy.effects[:]:
+            is_alive = effect.tick(enemy)
+            if not is_alive:
+                enemy.effects.remove(effect)
         more_damage = False
         print('=' * 40)
         print(f'Вы {ANSIColors.GREEN}({hero.name}){ANSIColors.RESET}: {draw_hp_bar(hero.hp, hero.max_hp)}')
@@ -67,84 +89,107 @@ def start_battle(hero, enemy):
         print(f'Ваши эффекты: {ANSIColors.GREEN}{hero.effects}{ANSIColors.RESET}')
         print(f'Эффекты врага: {ANSIColors.RED}{enemy.effects}{ANSIColors.RESET}')
         print('=' * 40)
-        
-        
-        print(f'1. {ANSIColors.RED}Ударить{ANSIColors.RESET}' )
-        print(f'2. {ANSIColors.PURPLE}Использовать предмет{ANSIColors.RESET}')
-        print(f'3. {ANSIColors.YELLOW}Попытаться контратаковать{ANSIColors.RESET}')
-        print(f'4. {ANSIColors.RED}Сильный удар{ANSIColors.RESET}')
-        battle_choice = input('Твое действие: ')
-        if battle_choice == '1':
-            clear_screen()
-            damage = random.randint(hero.min_damage, hero.max_damage)
-            for effect in hero.effects[:]:
-                if effect.atk_mult != 1.0:
-                    damage = int(damage * effect.atk_mult)
-                    print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!')  
-                    input()          
-            clear_screen()
-            time.sleep(0.5)
-            print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
+        if is_stunned:
+            print('Вы оглушены и не можете двигаться!')
             input()
-            enemy.take_damage(damage)
-            if hero.weapon_effect is not None:
-                hero.weapon_effect(hero,enemy,damage)
-            if not enemy.is_alive():
-                get_reward(hero,enemy)
-                break
-        elif battle_choice == '2':
-            clear_screen()
-            item_used = hero.use_item()
-            if  not item_used:
-                continue
-            
-            
-           
-        elif battle_choice == '3':
-            if contr_attack() == True:
-                edamage = random.randint(enemy.min_damage, enemy.max_damage)
-                enemy.take_damage(edamage)
-                print(f'Вы успешно контратаковали! Враг ударил сам себя на {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
-                input()
-                if not enemy.is_alive():  
-                    get_reward(hero,enemy)
-                    break
-                else:
-                    continue
-            else:
-                print('У вас не получилось!')
-                input()
-        elif battle_choice == '4':
-            if strong_attack():
+        else:
+            print(f'1. {ANSIColors.RED}Ударить{ANSIColors.RESET}' )
+            print(f'2. {ANSIColors.PURPLE}Использовать предмет{ANSIColors.RESET}')
+            print(f'3. {ANSIColors.YELLOW}Попытаться контратаковать{ANSIColors.RESET}')
+            print(f'4. {ANSIColors.RED}Сильный удар{ANSIColors.RESET}')
+            battle_choice = input('Твое действие: ')
+            if battle_choice == '1':
                 clear_screen()
-                s_damage = int(random.randint(hero.min_damage, hero.max_damage) * 1.5)
+                damage = random.randint(hero.min_damage, hero.max_damage)
                 for effect in hero.effects[:]:
-                    if effect.atk.mult != 1.0:
-                        s_damage = int(s_damage * effect.atk_mult)
-                        print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!') 
-                        input()
-                if hero.weapon ==  'Меч':
-                    s_damage += 5
-                enemy.take_damage(s_damage)
-                print(f'Сокрушительный удар! Вы нанесли {ANSIColors.RED}{s_damage}{ANSIColors.RESET} урона!')
+                    if effect.atk_mult != 1.0:
+                        damage = int(damage * effect.atk_mult)
+                        print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!')  
+                        input()          
+                clear_screen()
+                time.sleep(0.5)
+                print(f'Вы ударили врага на {ANSIColors.PURPLE}{damage}{ANSIColors.RESET} урона!')
                 input()
-            else:
-                more_damage = True
-                print('Вы промахнулись!')
-                input()
+                enemy.take_damage(damage)
+                if hero.weapon_effect is not None:
+                    hero.weapon_effect(hero,enemy,damage)
                 if not enemy.is_alive():
-                                    
                     get_reward(hero,enemy)
                     break
+            elif battle_choice == '2':
+                clear_screen()
+                item_used = hero.use_item()
+                if  not item_used:
+                    continue
+                
+                
+            
+            elif battle_choice == '3':
+                if contr_attack() == True:
+                    edamage = random.randint(enemy.min_damage, enemy.max_damage)
+                    enemy.take_damage(edamage)
+                    print(f'Вы успешно контратаковали! Враг ударил сам себя на {ANSIColors.RED}{edamage}{ANSIColors.RESET} урона!')
+                    input()
+                    if not enemy.is_alive():  
+                        get_reward(hero,enemy)
+                        break
+                    else:
+                        continue
+                else:
+                    print('У вас не получилось!')
+                    input()
+            elif battle_choice == '4':
+                if strong_attack():
+                    clear_screen()
+                    s_damage = int(random.randint(hero.min_damage, hero.max_damage) * 1.5)
+                    for effect in hero.effects[:]:
+                        if effect.atk.mult != 1.0:
+                            s_damage = int(s_damage * effect.atk_mult)
+                            print(f'{ANSIColors.PURPLE}{effect.name}{ANSIColors.RESET} изменил ваш урон!') 
+                            input()
+                    if hero.weapon ==  'Меч':
+                        s_damage += 5
+                    enemy.take_damage(s_damage)
+                    print(f'Сокрушительный удар! Вы нанесли {ANSIColors.RED}{s_damage}{ANSIColors.RESET} урона!')
+                    input()
+                else:
+                    more_damage = True
+                    print('Вы промахнулись!')
+                    input()
+                    if not enemy.is_alive():
+                                        
+                        get_reward(hero,enemy)
+                        break
                 
         clear_screen()
-        enemy.attack(hero,more_damage)
-        if not hero.is_alives():
-            clear_screen()
-            print('GAME OVER')
+        for effect in  enemy.effects:
+            if effect.is_stun:
+                is_enemy_stunned = True
+        if is_enemy_stunned:
+            print(f'{enemy.name} оглушен и не может атаковать!')
             input()
-            break
-            exit()
+        else:  
+            enemy.attack(hero,more_damage)
+            if not hero.is_alives():
+                while True:
+                    clear_screen
+                    print('ВЫ ПОГИБЛИ...')
+                    print('1.Загрузить сохранение')
+                    print('2. Выйти')
+                    choice =  input('Выберите действие: ')
+                    if choice == '1':
+                        from save_system import load_game
+                        loaded_hero = load_game()
+                        hero.__dict__.update(loaded_hero.__dict__)
+                        print('Игра успешно загружена!')
+                        input()
+                        return
+                    elif choice == '2':
+                        exit()
+                    else:
+                        print('Неверный ввод!')
+                        input()
+            
 def start_boss_fight(hero, enemy):
     is_rage = False
     is_crazy = False
@@ -169,9 +214,24 @@ def start_boss_fight(hero, enemy):
             input()
             is_boss_die(hero,enemy)
         if not hero.is_alives():
-            print('Вы не выдержали действия эффектов...')
-            input('Нажмите Enter...')
-            exit()
+            while True:
+                clear_screen
+                print('ВЫ ПОГИБЛИ...')
+                print('1.Загрузить сохранение')
+                print('2. Выйти')
+                choice =  input('Выберите действие: ')
+                if choice == '1':
+                    from save_system import load_game
+                    loaded_hero = load_game()
+                    hero.__dict__.update(loaded_hero.__dict__)
+                    print('Игра успешно загружена!')
+                    input()
+                    return
+                elif choice == '2':
+                    exit()
+                else:
+                    print('Неверный ввод!')
+                    input()
         if enemy.hp <= enemy.max_hp / 2 and is_rage == False:
             is_rage = True
             enemy.min_damage = int(enemy.min_damage * 1.5)
@@ -276,10 +336,31 @@ def start_boss_fight(hero, enemy):
                 break
                 
         clear_screen()
-        enemy.attack(hero,more_damage)
-        if not hero.is_alives():
-            clear_screen()
-            print('GAME OVER')
+        for effect in  enemy.effects:
+            if effect.is_stun:
+                is_enemy_stunned = True
+        if is_enemy_stunned:
+            print(f'{enemy.name} оглушен и не может атаковать!')
             input()
-            break
-            exit()
+        else:
+
+            enemy.attack(hero,more_damage)
+            if not hero.is_alives():
+                while True:
+                    clear_screen
+                    print('ВЫ ПОГИБЛИ...')
+                    print('1.Загрузить сохранение')
+                    print('2. Выйти')
+                    choice =  input('Выберите действие: ')
+                    if choice == '1':
+                        from save_system import load_game
+                        loaded_hero = load_game()
+                        hero.__dict__.update(loaded_hero.__dict__)
+                        print('Игра успешно загружена!')
+                        input()
+                        return
+                    elif choice == '2':
+                        exit()
+                    else:
+                        print('Неверный ввод!')
+                        input()

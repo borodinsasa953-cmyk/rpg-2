@@ -94,8 +94,8 @@ class Player:
 
             if item_data['type'] == 'weapon':
                 self.weapon = item_name
-                self.min_damage = item_data['min_damage']
-                self.max_damage = item_data['max_damage']
+                self.min_damage = item_data['min_damage'] + 3 * self.lvl
+                self.max_damage = item_data['max_damage'] + 3 * self.lvl
                 self.weapon_effect = item_data.get('effect', None)
                 print(f'Вы экипировали {item_name}! Урон: {ANSIColors.RED}{self.min_damage} - {self.max_damage}{ANSIColors.RESET}')
                 input()

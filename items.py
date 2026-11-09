@@ -1,5 +1,6 @@
 
 import random
+from effects import StatusEffect
 from utils import ANSIColors
 def effect_vampirism(hero, enemy, damage):
     heal_amount = max(1, damage // 3 )
@@ -19,6 +20,25 @@ def effect_spikes(hero, enemy, damage):
     enemy.take_damage(agressive_defence)
     print(f'Ваша броня вернула {ANSIColors.PURPLE}{enemy.name}{ANSIColors.RESET} {ANSIColors.RED}{agressive_defence}{ANSIColors.RESET} урона!')
     input()
+def effect_stunning(hero, enemy, damage):
+    if random.randint(1,100) <= 30:
+        stun = StatusEffect('Оглушение',1,is_stun=True)
+        enemy.effects.append(stun)
+        print('Оружие оглушило врага!')
+        input()
+def effect_poison(hero,enemy,damage):
+    poison =  StatusEffect('Древний яд', 5, damage=8,atk_mult= 0.8)
+    poison2 = StatusEffect('Яд', 3, damage= 3)
+    choice_poison = random.randint(1,100)
+    active_effects_names = [e.name for e in enemy.effects]
+    if choice_poison <= 20 and 'Древний яд' not in active_effects_names:
+        enemy.effects.append(poison)
+        print(f'{ANSIColors.BOLD}Вы наложили на врага {ANSIColors.RED}Древний яд{ANSIColors.RESET}')
+        input()
+    elif 20<choice_poison<=100 and 'Яд' not in active_effects_names:
+        enemy.effects.append(poison2)
+        print(f'Вы наложили на врага яд!')
+        input()
 ITEMS = {
     'Меч': {
         'name': 'Меч',
@@ -99,8 +119,27 @@ ITEMS = {
         'atk_mult': 1.5,
         'duration': 3,
         'desc': 'На короткое время увеличивает ваш урон'
+    },
+    'Дробитель':{
+        'name':'Дробитель',
+        'price': 250,
+        'type': 'weapon',
+        'min_damage': 30,
+        'max_damage': 45,
+        'desc': 'Мощное и тяжелое оружие, его удар может оглушить врага!',
+        'effect': effect_stunning,
+        'requries_boss': True
+    },
+    'Проклятое жало древних':{
+        'name': 'Проклятое жало древних',
+        'price': 550,
+        'type': 'weapon',
+        'min_damage': 55,
+        'max_damage': 67,
+       'desc':'Невероятно сильное оружие, способное отравлять врагов древним ядом...',
+       'effect': effect_poison,
+       'requries_boss': True
     }
-    
 }
 
 list_items = list(ITEMS.keys())
