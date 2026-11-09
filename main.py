@@ -7,7 +7,7 @@ from locations import LOCATIONS, location_list
 from enemies import EMEMY_DATABASE
 import random
 from utils import  give_name, clear_screen, ANSIColors
-from game_mechanics import travel, open_shop
+from game_mechanics import travel, open_shop, open_archive
 from save_system import load_game, save_game
 from fight import contr_attack, start_battle, strong_attack
 import time
@@ -60,7 +60,8 @@ while True:
         print('3. Зайти в магазин')
         print('4. Инвентарь')
         print('5. Продать предмет')
-        print('6. Сохранить игру')
+        print('6. Архив')
+        print('7. Сохранить игру')
         print('0. Выйти')
         print('=' * 30)
         choice = input('Выбери действие: ')
@@ -84,6 +85,9 @@ while True:
             hero.sale_item(item_choice)
             input()
         elif choice == '6':
+            open_archive(hero)
+
+        elif choice == '7':
             save_game(hero)
             input()
         elif choice == '0':

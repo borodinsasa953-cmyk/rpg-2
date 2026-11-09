@@ -5,6 +5,7 @@ from locations import LOCATIONS, location_list
 from enemies import Enemy, EMEMY_DATABASE
 from fight import contr_attack, start_battle, start_boss_fight
 from items import ITEMS, list_items
+from lor import LETTERS, letters_list
 import os
 import random
 import time
@@ -32,6 +33,8 @@ def travel(hero):
         
         
         local_enemy = LOCATIONS[location]['enemies']
+        local_letters = LOCATIONS[location]['letters']
+        nohero_local_letters = [ i for i in local_letters if i not in hero.collected_letters]
         if not local_enemy:
             print (f'{location}. {LOCATIONS[location]["desc"]}')
             print('Нажми Enter чтобы уйти')
@@ -95,6 +98,11 @@ def travel(hero):
                         input()
             else:
                 return
+        elif 27 <= event_roll <= 47 and len(nohero_local_letters) > 0:
+            give_letter = random.choice(nohero_local_letters)
+            hero.collected_letters.append(give_letter)
+            print('Вы нашли клочок бумаги. Прочитать можно в меню архив.')
+            input()
         else:
             local_enemy = LOCATIONS[location]['enemies']
           
@@ -164,5 +172,37 @@ def open_shop(hero):
         except IndexError:
             clear_screen()
             print('Нет такого товара!')
-            
+def open_archive(hero):
+    while True:
+        clear_screen()
+        print(f'{ANSIColors.BOLD} АРХИВ:')
+        print(f'Собрано записей {len(hero.collected_letters)} / {len(letters_list)} {ANSIColors.RESET}')
+        print()
+        if len(hero.collected_letters) == 0:
+            print('Здесь пока что ничего нет...')
+            input()
+            return
+        for i,l in enumerate(hero.collected_letters, start=1):
+            print(f'{i}. {LETTERS[l]['title']}')
+        print('0. Выйти')
+        try:
+            choice = int(input('Что вы хотите прочитать?: '))
+            if choice == 0:
+                return
+            letter = letters_list [choice- 1]
+            clear_screen()
+            print()
+            print(f'                                  {ANSIColors.BOLD}{LETTERS[letter]['title']}{ANSIColors.RESET}')
+            print('=' * 100)
+            print()
+            print()
+            print(f'  {LETTERS[letter]['text']}')
+            print()
+            print()
+            print('=' * 100)
+            input()
+        except ValueError:
+            print('Введите правильное число!')
+        except IndexError:
+            print('Нет такой записи!')
 
